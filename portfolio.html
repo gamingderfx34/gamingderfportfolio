@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GamingDerf | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #161616;
+    --surface: #1a1a1a;
+    --border: #2a2a2a;
+    --accent: #e8ff47;
+    --accent2: #ff6b35;
+    --text: #f0ede8;
+    --muted: #666;
+    --dim: #333;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.5;
+    transition: transform 0.15s ease, width 0.2s, height 0.2s;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 3rem;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* Category filter tabs */
+  .cat-tabs {
+    display: flex; gap: 0.5rem;
+  }
+  .cat-tab {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    cursor: none;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .cat-tab:hover, .cat-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  /* Hero */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(8rem, 20vw, 22rem);
+    color: transparent;
+    -webkit-text-stroke: 1px #1e1e1e;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.4s forwards;
+  }
+
+  .hero-name span { color: var(--accent); }
+
+  .hero-ign {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    color: var(--muted);
+    margin-top: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.6s forwards;
+  }
+  .hero-ign .ign-tag { color: var(--accent2); }
+
+  .hero-desc {
+    max-width: 480px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.8s forwards;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1rem; margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 1s forwards;
+  }
+
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    cursor: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-primary:hover { background: #fff; }
+  .btn-outline { border: 1px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-stats {
+    position: absolute; right: 3rem; bottom: 4rem;
+    display: flex; flex-direction: column; gap: 2rem;
+    text-align: right;
+    opacity: 0;
+    animation: fadeUp 0.6s 1.2s forwards;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Sections */
+  section { padding: 6rem 3rem; position: relative; }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    line-height: 1;
+    margin-bottom: 3rem;
+    letter-spacing: 0.03em;
+  }
+
+  .divider {
+    width: 100%; height: 1px;
+    background: var(--border);
+    margin: 0;
+  }
+
+  /* About */
+  #about { background: var(--bg2); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    line-height: 1.9;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-text p.highlight {
+    color: var(--text);
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  .about-sidebar { display: flex; flex-direction: column; gap: 2rem; }
+
+  .info-block { border-left: 2px solid var(--accent); padding-left: 1.2rem; }
+  .info-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .info-value { font-size: 0.95rem; color: var(--text); }
+
+  .game-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .game-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+  .game-tag:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  /* Blog / Content section */
+  #content { background: var(--bg); }
+
+  .content-filter {
+    display: flex; gap: 0.75rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--muted);
+    cursor: none;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .post-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.8rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .post-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .post-card:hover { border-color: var(--dim); transform: translateY(-3px); }
+  .post-card:hover::before { transform: scaleX(1); }
+
+  .post-cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+  .cat-gaming { background: rgba(255,107,53,0.15); color: var(--accent2); border: 1px solid rgba(255,107,53,0.3); }
+  .cat-personal { background: rgba(232,255,71,0.1); color: var(--accent); border: 1px solid rgba(232,255,71,0.25); }
+  .cat-work { background: rgba(100,149,237,0.12); color: #6495ed; border: 1px solid rgba(100,149,237,0.3); }
+
+  .post-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
+    color: var(--text);
+  }
+  .post-excerpt {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .post-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+    display: flex; justify-content: space-between;
+  }
+
+  /* Portfolio */
+  #portfolio { background: var(--bg2); }
+
+  .projects-list { display: flex; flex-direction: column; }
+
+  .project-row {
+    display: flex; align-items: center;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--border);
+    gap: 2rem;
+    transition: padding-left 0.3s;
+    cursor: none;
+    text-decoration: none;
+    color: inherit;
+  }
+  .project-row:hover { padding-left: 1rem; }
+  .project-row:hover .proj-title { color: var(--accent); }
+
+  .proj-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--dim);
+    min-width: 2.5rem;
+  }
+  .proj-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    flex: 1;
+    transition: color 0.2s;
+  }
+  .proj-tags { display: flex; gap: 0.5rem; }
+  .proj-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .proj-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    min-width: 3rem;
+    text-align: right;
+  }
+
+  /* Contact */
+  #contact { background: var(--bg); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  .contact-info p {
+    color: var(--muted);
+    line-height: 1.9;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .social-links { display: flex; flex-direction: column; gap: 0.8rem; }
+  .social-link {
+    display: flex; align-items: center; gap: 1rem;
+    text-decoration: none;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    cursor: none;
+  }
+  .social-link:hover { color: var(--accent); border-color: var(--accent); }
+  .social-link span { color: var(--dim); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .form-input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.9rem 1rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+    cursor: none;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-input::placeholder { color: var(--dim); }
+
+  .btn-send {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    cursor: none;
+    transition: background 0.2s, transform 0.1s;
+    align-self: flex-start;
+  }
+  .btn-send:hover { background: #fff; }
+  .btn-send:active { transform: scale(0.98); }
+
+  /* Footer */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .footer-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--dim); }
+
+  /* Hidden posts */
+  .post-card[data-cat].hidden { display: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    #hero { padding: 6rem 1.5rem 3rem; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-stats { position: static; flex-direction: row; margin-top: 3rem; text-align: left; }
+    .proj-tags { display: none; }
+    footer { flex-direction: column; gap: 0.8rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">YN<span style="color:var(--text)">.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#content">Blog</a></li>
+    <li><a href="#portfolio">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="cat-tabs">
+    <button class="cat-tab active" onclick="switchMode('all')">All</button>
+    <button class="cat-tab" onclick="switchMode('gaming')">Gaming</button>
+    <button class="cat-tab" onclick="switchMode('personal')">Personal</button>
+    <button class="cat-tab" onclick="switchMode('work')">Work</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-text">GAMINGDERF</div>
+  <div class="hero-tag">// est. 2025 · PC Gamer · GamingDerf</div>
+  <h1 class="hero-name">Your<br><span class="hero-realname">← Edit Name</span></h1>
+  <p class="hero-ign">aka <span class="ign-tag">[ GamingDerf ]</span></p>
+  <p class="hero-desc">
+    Edit this section to introduce yourself. Tell people who you are, what you do, what games you play, or anything you want the world to know. This is YOUR space.
+  </p>
+  <div class="hero-cta">
+    <a href="#portfolio" class="btn btn-primary">View My Work</a>
+    <a href="#content" class="btn btn-outline">Read Blog</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">00+</div>
+      <div class="stat-label">Games Played</div>
+    </div>
+    <div>
+      <div class="stat-num">00+</div>
+      <div class="stat-label">Posts Written</div>
+    </div>
+    <div>
+      <div class="stat-num">00+</div>
+      <div class="stat-label">Projects Done</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">// 01 — About Me</div>
+  <h2 class="section-title reveal">Who I Am</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p class="highlight">
+        Edit this paragraph to write a strong intro about yourself. Make it personal and memorable. Who are you beyond your job title?
+      </p>
+      <p>
+        This second paragraph is for more detail — your background, your journey, what drives you. Talk about where you're from, what you've done, what you're building. Be real, be you.
+      </p>
+      <p>
+        Add anything else here — hobbies, passions, life goals. This is your canvas.
+      </p>
+      <div class="game-tags">
+        <div class="game-tag">Game Title 1</div>
+        <div class="game-tag">Game Title 2</div>
+        <div class="game-tag">Game Title 3</div>
+        <div class="game-tag">Game Title 4</div>
+        <div class="game-tag">Game Title 5</div>
+        <div class="game-tag">+ Add More</div>
+      </div>
+    </div>
+    <div class="about-sidebar reveal">
+      <div class="info-block">
+        <div class="info-label">Name</div>
+        <div class="info-value">← Your Real Name Here</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">IGN / Handle</div>
+        <div class="info-value">GamingDerf</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Location</div>
+        <div class="info-value">Your City, Country</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Platform</div>
+        <div class="info-value">PC — Steam / Battle.net / etc.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Main Genre</div>
+        <div class="info-value">FPS / RPG / Strategy / etc.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Status</div>
+        <div class="info-value" style="color:var(--accent)">● Online & Available</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BLOG / CONTENT -->
+<section id="content">
+  <div class="section-label">// 02 — Blog & Vlogs</div>
+  <h2 class="section-title reveal">Latest Posts</h2>
+
+  <div class="content-filter">
+    <button class="filter-btn active" onclick="filterPosts('all')">All Posts</button>
+    <button class="filter-btn" onclick="filterPosts('gaming')">Gaming</button>
+    <button class="filter-btn" onclick="filterPosts('personal')">Personal</button>
+    <button class="filter-btn" onclick="filterPosts('work')">Work</button>
+  </div>
+
+  <div class="posts-grid">
+
+    <article class="post-card reveal" data-cat="gaming">
+      <div class="post-cat cat-gaming">Gaming</div>
+      <h3 class="post-title">Post Title Goes Here — Edit This</h3>
+      <p class="post-excerpt">Write a short summary of your post here. This is the preview text that readers will see before clicking. Keep it punchy and interesting — around 2–3 sentences.</p>
+      <div class="post-meta">
+        <span>Month DD, YYYY</span>
+        <span>X min read</span>
+      </div>
+    </article>
+
+    <article class="post-card reveal" data-cat="personal">
+      <div class="post-cat cat-personal">Personal</div>
+      <h3 class="post-title">Another Post Title — Your Story</h3>
+      <p class="post-excerpt">This is where you share your personal thoughts, life updates, or anything you want your readers to know about you. Replace this with your actual content.</p>
+      <div class="post-meta">
+        <span>Month DD, YYYY</span>
+        <span>X min read</span>
+      </div>
+    </article>
+
+    <article class="post-card reveal" data-cat="work">
+      <div class="post-cat cat-work">Work</div>
+      <h3 class="post-title">Work / Career Post Title Here</h3>
+      <p class="post-excerpt">Talk about something work-related — a project you completed, a skill you learned, a challenge you overcame, or career advice you want to share.</p>
+      <div class="post-meta">
+        <span>Month DD, YYYY</span>
+        <span>X min read</span>
+      </div>
+    </article>
+
+    <article class="post-card reveal" data-cat="gaming">
+      <div class="post-cat cat-gaming">Gaming</div>
+      <h3 class="post-title">Game Review / Highlight Title</h3>
+      <p class="post-excerpt">Share your gaming experience, a review, a highlight clip description, or anything about the games you play. Add more cards like this by duplicating this block.</p>
+      <div class="post-meta">
+        <span>Month DD, YYYY</span>
+        <span>X min read</span>
+      </div>
+    </article>
+
+    <article class="post-card reveal" data-cat="personal">
+      <div class="post-cat cat-personal">Personal</div>
+      <h3 class="post-title">Vlog Entry Title Goes Here</h3>
+      <p class="post-excerpt">Link your vlog here, embed a YouTube video, or describe what you recorded. This card can be used for any type of vlog content you create.</p>
+      <div class="post-meta">
+        <span>Month DD, YYYY</span>
+        <span>X min read</span>
+      </div>
+    </article>
+
+    <article class="post-card reveal" data-cat="work">
+      <div class="post-cat cat-work">Work</div>
+      <h3 class="post-title">Another Work or Tech Post</h3>
+      <p class="post-excerpt">Duplicate and fill these cards as you write more content. Each one represents a blog entry, vlog, or any kind of update you want to share.</p>
+      <div class="post-meta">
+        <span>Month DD, YYYY</span>
+        <span>X min read</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-label">// 03 — Projects & Portfolio</div>
+  <h2 class="section-title reveal">My Work</h2>
+
+  <div class="projects-list reveal">
+    <a href="#" class="project-row">
+      <span class="proj-num">01</span>
+      <span class="proj-title">Project Name Here</span>
+      <div class="proj-tags">
+        <span class="proj-tag">Tag</span>
+        <span class="proj-tag">Tag</span>
+      </div>
+      <span class="proj-year">2025</span>
+    </a>
+    <a href="#" class="project-row">
+      <span class="proj-num">02</span>
+      <span class="proj-title">Another Project or Achievement</span>
+      <div class="proj-tags">
+        <span class="proj-tag">Gaming</span>
+        <span class="proj-tag">Community</span>
+      </div>
+      <span class="proj-year">2024</span>
+    </a>
+    <a href="#" class="project-row">
+      <span class="proj-num">03</span>
+      <span class="proj-title">Work Portfolio Item or Case Study</span>
+      <div class="proj-tags">
+        <span class="proj-tag">Work</span>
+        <span class="proj-tag">Design</span>
+      </div>
+      <span class="proj-year">2024</span>
+    </a>
+    <a href="#" class="project-row">
+      <span class="proj-num">04</span>
+      <span class="proj-title">Gaming Clan / Team / Tournament</span>
+      <div class="proj-tags">
+        <span class="proj-tag">FPS</span>
+        <span class="proj-tag">Competitive</span>
+      </div>
+      <span class="proj-year">2023</span>
+    </a>
+    <a href="#" class="project-row">
+      <span class="proj-num">05</span>
+      <span class="proj-title">Add More Projects Here</span>
+      <div class="proj-tags">
+        <span class="proj-tag">Any</span>
+        <span class="proj-tag">Type</span>
+      </div>
+      <span class="proj-year">2023</span>
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">// 04 — Get In Touch</div>
+  <h2 class="section-title reveal">Contact</h2>
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <p>
+        Want to collab, play together, talk about work, or just say hi? Drop a message below or find me on any of these platforms.
+      </p>
+      <div class="social-links">
+        <a href="#" class="social-link"><span>Discord</span> YourUsername#0000</a>
+        <a href="#" class="social-link"><span>Steam</span> YourSteamProfile</a>
+        <a href="#" class="social-link"><span>YouTube</span> @YourChannel</a>
+        <a href="#" class="social-link"><span>Twitter / X</span> @YourHandle</a>
+        <a href="#" class="social-link"><span>Email</span> your@email.com</a>
+        <a href="#" class="social-link"><span>LinkedIn</span> yourprofile</a>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-input" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <select class="form-input">
+          <option value="" style="background:#1a1a1a">Select a topic...</option>
+          <option style="background:#1a1a1a">Gaming / Collab</option>
+          <option style="background:#1a1a1a">Work Inquiry</option>
+          <option style="background:#1a1a1a">Blog / Content</option>
+          <option style="background:#1a1a1a">Just Saying Hi</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-input" rows="5" placeholder="What's on your mind?"></textarea>
+      </div>
+      <button class="btn-send" onclick="alert('Connect this form to a service like Formspree or EmailJS to receive messages!')">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">GD.</div>
+  <div class="footer-text">© 2025 GamingDerf · All rights reserved</div>
+  <div class="footer-text" style="color:var(--accent)">// Built with ♥</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let rx = 0, ry = 0, cx = 0, cy = 0;
+  document.addEventListener('mousemove', e => {
+    cx = e.clientX; cy = e.clientY;
+    cursor.style.transform = `translate(${cx - 5}px, ${cy - 5}px)`;
+  });
+  setInterval(() => {
+    rx += (cx - rx) * 0.12;
+    ry += (cy - ry) * 0.12;
+    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+  }, 16);
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Blog filter
+  function filterPosts(cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('.post-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // Nav mode switch (for future use)
+  function switchMode(mode) {
+    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
