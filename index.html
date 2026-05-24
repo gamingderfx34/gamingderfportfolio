@@ -539,6 +539,113 @@
   }
   .reveal.visible { opacity: 1; transform: none; }
 
+  /* Videos section */
+  #videos { background: var(--bg3); }
+
+  .featured-video {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .featured-video:hover .featured-thumb img { transform: scale(1.03); }
+
+  .featured-thumb {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    background: var(--surface);
+  }
+  .featured-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+    display: block;
+  }
+
+  .play-btn {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px; height: 64px;
+    background: rgba(232,255,71,0.9);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .play-btn.small { width: 40px; height: 40px; }
+  .featured-video:hover .play-btn,
+  .video-card:hover .play-btn { transform: translate(-50%, -50%) scale(1.1); background: var(--accent); }
+
+  .play-icon {
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 18px;
+    border-color: transparent transparent transparent #000;
+    margin-left: 4px;
+  }
+  .play-btn.small .play-icon {
+    border-width: 7px 0 7px 12px;
+    margin-left: 3px;
+  }
+
+  .featured-platform-badge, .vid-platform-badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .badge-youtube { background: rgba(255,0,0,0.85); color: #fff; }
+  .badge-tiktok { background: rgba(0,0,0,0.85); color: #ff6b35; border: 1px solid #ff6b35; }
+  .badge-facebook { background: rgba(100,149,237,0.85); color: #fff; }
+
+  .featured-info { display: flex; flex-direction: column; justify-content: center; gap: 0.8rem; }
+  .featured-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.4rem; line-height: 1.3; color: var(--text); }
+  .featured-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.8; }
+  .featured-meta { display: flex; gap: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--dim); margin-top: 0.5rem; }
+  .feat-game { color: var(--accent2); }
+
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .video-card {
+    text-decoration: none;
+    color: inherit;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, transform 0.2s;
+    display: block;
+  }
+  .video-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+  .video-thumb {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+  .video-card:hover .video-thumb img { transform: scale(1.05); }
+
+  .vid-platform-badge { top: 8px; left: 8px; font-size: 0.58rem; padding: 0.2rem 0.5rem; }
+
+  .video-info { padding: 0.9rem 1rem; }
+  .video-title { font-weight: 700; font-size: 0.88rem; color: var(--text); margin-bottom: 0.3rem; line-height: 1.4; }
+  .video-game { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--accent2); letter-spacing: 0.05em; }
+
+  @media (max-width: 768px) {
+    .featured-video { grid-template-columns: 1fr; gap: 1.2rem; }
+  }
+
   /* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
@@ -571,6 +678,7 @@
     <li><a href="#about">About</a></li>
     <li><a href="#content">Blog</a></li>
     <li><a href="#portfolio">Work</a></li>
+    <li><a href="#videos">Videos</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="cat-tabs">
@@ -584,8 +692,8 @@
 <!-- HERO -->
 <section id="hero">
   <div class="hero-bg-text">GAMINGDERF</div>
-  <div class="hero-tag">// est. 2025 · PC Gamer · Content Creator</div>
-  <h1 class="hero-name">Your<br><span class="hero-realname">← GAMING DERF</span></h1>
+  <div class="hero-tag">// est. 2025 · PC Gamer · GamingDerf</div>
+  <h1 class="hero-name">Your<br><span class="hero-realname">← Edit Name</span></h1>
   <p class="hero-ign">aka <span class="ign-tag">[ GamingDerf ]</span></p>
   <p class="hero-desc">
     Edit this section to introduce yourself. Tell people who you are, what you do, what games you play, or anything you want the world to know. This is YOUR space.
@@ -639,7 +747,7 @@
     <div class="about-sidebar reveal">
       <div class="info-block">
         <div class="info-label">Name</div>
-        <div class="info-value">← Frederick W. Calibo</div>
+        <div class="info-value">← Your Real Name Here</div>
       </div>
       <div class="info-block">
         <div class="info-label">IGN / Handle</div>
@@ -647,7 +755,7 @@
       </div>
       <div class="info-block">
         <div class="info-label">Location</div>
-        <div class="info-value">Cagayan de Oro, Philippines</div>
+        <div class="info-value">Your City, Country</div>
       </div>
       <div class="info-block">
         <div class="info-label">Platform</div>
@@ -802,9 +910,101 @@
 
 <div class="divider"></div>
 
+<!-- VIDEOS -->
+<section id="videos">
+  <div class="section-label">// 04 — Clips &amp; Videos</div>
+  <h2 class="section-title reveal">My Content</h2>
+
+  <div class="content-filter">
+    <button class="filter-btn active" onclick="filterVideos('all',this)">All</button>
+    <button class="filter-btn" onclick="filterVideos('youtube',this)">YouTube</button>
+    <button class="filter-btn" onclick="filterVideos('tiktok',this)">TikTok</button>
+    <button class="filter-btn" onclick="filterVideos('facebook',this)">Facebook Gaming</button>
+  </div>
+
+  <!-- Featured -->
+  <a href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID" target="_blank" class="featured-video reveal">
+    <div class="featured-thumb">
+      <img src="https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg" alt="Featured" onerror="this.src='https://placehold.co/1280x720/111111/e8ff47?text=YOUR+FEATURED+CLIP'">
+      <div class="play-btn"><div class="play-icon"></div></div>
+      <div class="featured-platform-badge badge-youtube">▶ YouTube</div>
+    </div>
+    <div class="featured-info">
+      <div class="post-cat cat-gaming" style="margin-bottom:0.8rem">Featured Clip</div>
+      <h3 class="featured-title">Your Best Clip Title Goes Here</h3>
+      <p class="featured-desc">Describe what happens in this clip — a sick play, a funny moment, a highlight. Replace this with your actual video description.</p>
+      <div class="featured-meta">
+        <span class="feat-game">Game Name</span>
+        <span>Month DD, YYYY</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Grid -->
+  <div class="videos-grid">
+
+    <a href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID_2" target="_blank" class="video-card reveal" data-platform="youtube">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/YOUR_VIDEO_ID_2/mqdefault.jpg" alt="Clip" onerror="this.src='https://placehold.co/320x180/111111/e8ff47?text=CLIP'">
+        <div class="play-btn small"><div class="play-icon"></div></div>
+        <div class="vid-platform-badge badge-youtube">▶ YT</div>
+      </div>
+      <div class="video-info"><p class="video-title">YouTube Clip Title</p><span class="video-game">Game Name</span></div>
+    </a>
+
+    <a href="https://www.tiktok.com/@yourusername/video/YOUR_ID" target="_blank" class="video-card reveal" data-platform="tiktok">
+      <div class="video-thumb">
+        <img src="https://placehold.co/320x180/111111/ff6b35?text=TIKTOK+CLIP" alt="TikTok">
+        <div class="play-btn small"><div class="play-icon"></div></div>
+        <div class="vid-platform-badge badge-tiktok">♪ TikTok</div>
+      </div>
+      <div class="video-info"><p class="video-title">TikTok Clip Title</p><span class="video-game">Game Name</span></div>
+    </a>
+
+    <a href="https://www.facebook.com/gaming/YOUR_PAGE" target="_blank" class="video-card reveal" data-platform="facebook">
+      <div class="video-thumb">
+        <img src="https://placehold.co/320x180/111111/6495ed?text=FB+GAMING" alt="FB Gaming">
+        <div class="play-btn small"><div class="play-icon"></div></div>
+        <div class="vid-platform-badge badge-facebook">🎮 FB Gaming</div>
+      </div>
+      <div class="video-info"><p class="video-title">Facebook Gaming Clip</p><span class="video-game">Game Name</span></div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID_3" target="_blank" class="video-card reveal" data-platform="youtube">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/YOUR_VIDEO_ID_3/mqdefault.jpg" alt="Clip" onerror="this.src='https://placehold.co/320x180/111111/e8ff47?text=CLIP'">
+        <div class="play-btn small"><div class="play-icon"></div></div>
+        <div class="vid-platform-badge badge-youtube">▶ YT</div>
+      </div>
+      <div class="video-info"><p class="video-title">Another YouTube Clip</p><span class="video-game">Game Name</span></div>
+    </a>
+
+    <a href="https://www.tiktok.com/@yourusername/video/YOUR_ID_2" target="_blank" class="video-card reveal" data-platform="tiktok">
+      <div class="video-thumb">
+        <img src="https://placehold.co/320x180/111111/ff6b35?text=TIKTOK+2" alt="TikTok">
+        <div class="play-btn small"><div class="play-icon"></div></div>
+        <div class="vid-platform-badge badge-tiktok">♪ TikTok</div>
+      </div>
+      <div class="video-info"><p class="video-title">Another TikTok Clip</p><span class="video-game">Game Name</span></div>
+    </a>
+
+    <a href="https://www.facebook.com/gaming/YOUR_PAGE/videos/YOUR_ID_2" target="_blank" class="video-card reveal" data-platform="facebook">
+      <div class="video-thumb">
+        <img src="https://placehold.co/320x180/111111/6495ed?text=FB+GAMING+2" alt="FB Gaming">
+        <div class="play-btn small"><div class="play-icon"></div></div>
+        <div class="vid-platform-badge badge-facebook">🎮 FB Gaming</div>
+      </div>
+      <div class="video-info"><p class="video-title">Another FB Gaming Clip</p><span class="video-game">Game Name</span></div>
+    </a>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- CONTACT -->
 <section id="contact">
-  <div class="section-label">// 04 — Get In Touch</div>
+  <div class="section-label">// 05 — Get In Touch</div>
   <h2 class="section-title reveal">Contact</h2>
   <div class="contact-grid">
     <div class="contact-info reveal">
@@ -812,12 +1012,12 @@
         Want to collab, play together, talk about work, or just say hi? Drop a message below or find me on any of these platforms.
       </p>
       <div class="social-links">
-        <a href="#" class="social-link"><span>Discord</span> 552172608939098113</a>
-        <a href="#" class="social-link"><span>Steam</span> https://steamcommunity.com/profiles/76561198085117880/</a>
-        <a href="#" class="social-link"><span>YouTube</span> https://www.youtube.com/@gamingwithderfx</a>
-        <a href="#" class="social-link"><span>Twitter / X</span> X</a>
-        <a href="#" class="social-link"><span>Email</span> frederickcalibo1902@gmail.com</a>
-        <a href="#" class="social-link"><span>LinkedIn</span> https://www.linkedin.com/in/frederick-calibo-595926282/</a>
+        <a href="#" class="social-link"><span>Discord</span> YourUsername#0000</a>
+        <a href="#" class="social-link"><span>Steam</span> YourSteamProfile</a>
+        <a href="#" class="social-link"><span>YouTube</span> @YourChannel</a>
+        <a href="#" class="social-link"><span>Twitter / X</span> @YourHandle</a>
+        <a href="#" class="social-link"><span>Email</span> your@email.com</a>
+        <a href="#" class="social-link"><span>LinkedIn</span> yourprofile</a>
       </div>
     </div>
     <div class="contact-form reveal">
@@ -881,6 +1081,16 @@
     });
   }, { threshold: 0.1 });
   reveals.forEach(r => obs.observe(r));
+
+  function filterVideos(platform, btn) {
+    document.querySelectorAll('.content-filter .filter-btn').forEach(b => {
+      if (b.closest('#videos')) b.classList.remove('active');
+    });
+    btn.classList.add('active');
+    document.querySelectorAll('.video-card').forEach(card => {
+      card.style.display = (platform === 'all' || card.dataset.platform === platform) ? '' : 'none';
+    });
+  }
 
   // Blog filter
   function filterPosts(cat) {
